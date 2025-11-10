@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Student ATM Services — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="left-group">
+      <div class="rupee-wrap"><div id="rupee3" class="rupee">₹</div></div>
+      <button id="theme-toggle3" class="theme-btn" aria-label="Toggle theme">☀️</button>
+    </div>
+    <div class="center-title">
+      <h1>Student ATM Services</h1>
+      <div class="tagline">Your Personal Dashboard</div>
+    </div>
+    <div class="right-tricolor" aria-hidden="true">
+      <div class="tri saffron"></div>
+      <div class="tri white"><div class="chakra"></div></div>
+      <div class="tri green"></div>
+    </div>
+  </header>
+
+  <div class="storm-bg" aria-hidden="true">
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="flash-overlay"></div>
+    <div class="chakra-bg"></div>
+    <div class="blink-overlay" id="blink-overlay-3"></div>
+  </div>
+
+  <main class="main-wrap">
+    <section id="dashboard-card" class="card hidden" aria-live="polite">
+      <div class="atm-header">
+        <div>
+          <div class="welcome">Welcome, <strong id="user-name"></strong></div>
+          <div class="small">Account: <span id="user-account"></span></div>
+        </div>
+        <div class="balance-box">
+          <div class="small">Balance</div>
+          <div class="balance-amount">₹<span id="balance">0</span></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <input id="amount" type="number" placeholder="Enter amount" inputmode="numeric" />
+        <div class="row">
+          <button class="btn success" onclick="deposit()">Deposit</button>
+          <button class="btn danger" onclick="withdraw()">Withdraw</button>
+        </div>
+
+        <hr/>
+
+        <h3>Transfer Money</h3>
+        <input id="transfer-account" type="number" placeholder="Receiver account no." inputmode="numeric" />
+        <input id="transfer-amount" type="number" placeholder="Amount to transfer" inputmode="numeric" />
+        <div class="row">
+          <button class="btn purple" onclick="transferMoney()">Transfer</button>
+          <button class="btn" onclick="showHistory()">History</button>
+        </div>
+
+        <div class="row">
+          <button class="btn" onclick="downloadHistory()">Download History</button>
+          <button class="btn" onclick="logoutFromDashboard()">Logout</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="history-card" class="card hidden">
+      <h2>Transaction History</h2>
+      <div id="history-list" class="history-list"></div>
+      <div class="row">
+        <button class="btn" onclick="closeHistory()">Close</button>
+        <button class="btn" onclick="downloadHistory()">Download</button>
+      </div>
+    </section>
+
+    <footer class="footer">AJ Computing Technologies</footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDataIfNeeded();
+      setupThemeToggle('theme-toggle3');
+      const active = localStorage.getItem('activeAccount');
+      if (!active){
+        alert('No active account found. Please login from the main page.');
+      } else {
+        openDashboardFor(Number(active));
+      }
+      // keep live updates when other tabs change users
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'users') {
+          const activeNow = localStorage.getItem('activeAccount');
+          if (activeNow) openDashboardFor(Number(activeNow));
+        }
+      });
+    });
+  </script>
+</body>
+</html>

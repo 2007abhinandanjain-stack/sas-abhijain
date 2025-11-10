@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Student ATM Services — Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="left-group">
+      <div class="rupee-wrap"><div id="rupee" class="rupee">₹</div></div>
+      <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">☀️</button>
+    </div>
+
+    <div class="center-title">
+      <h1 id="main-title">Student ATM Services</h1>
+      <div class="tagline">Experience Digital Banking for Students</div>
+    </div>
+
+    <div class="right-tricolor" aria-hidden="true">
+      <div class="tri saffron"></div>
+      <div class="tri white"><div class="chakra"></div></div>
+      <div class="tri green"></div>
+    </div>
+  </header>
+
+  <div class="storm-bg" aria-hidden="true">
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="flash-overlay"></div>
+    <div class="chakra-bg"></div>
+    <div class="blink-overlay" id="blink-overlay"></div>
+  </div>
+
+  <!-- Alarm overlay -->
+  <div id="alarm-overlay" class="alarm-overlay hidden" role="alert" aria-live="assertive">
+    <div class="alarm-box">
+      <h2>⚠️ Unauthorized access detected</h2>
+      <p>Please wait <span id="cooldown-timer">30</span> seconds before trying again.</p>
+    </div>
+  </div>
+
+  <main class="main-wrap">
+    <section id="landing" class="card center-card" aria-labelledby="main-title">
+      <h2>Welcome</h2>
+      <p class="lead">Secure student banking simulation</p>
+
+      <div id="login-box" class="login-box">
+        <h3>Login</h3>
+        <input id="account-number" placeholder="Account Number" inputmode="numeric" pattern="[0-9]*" autocomplete="on" />
+        <div class="pin-wrapper">
+          <input id="pin" type="password" placeholder="PIN" inputmode="numeric" pattern="[0-9]*" autocomplete="current-password" />
+          <button class="eye-btn" onclick="togglePin('pin', this)" aria-label="Show or hide PIN">👁️</button>
+        </div>
+        <div class="row">
+          <button id="login-btn" class="btn primary" onclick="handleLogin()">Login</button>
+          <button class="btn" onclick="openCreatePage()">Create New Account</button>
+        </div>
+      </div>
+
+      <div id="msg" class="small muted" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">AJ Computing Technologies</footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // page init
+    document.addEventListener('DOMContentLoaded', () => {
+      initDataIfNeeded();
+      setupThemeToggle();
+      restoreLoginState();
+      // resume WebAudio on first user gesture to avoid autoplay blocks (safe)
+      const resumeAudio = () => { if (window.__audioCtxStarter) { window.__audioCtxStarter(); window.__audioCtxStarter = null; } document.removeEventListener('click', resumeAudio); document.removeEventListener('touchstart', resumeAudio); };
+      document.addEventListener('click', resumeAudio);
+      document.addEventListener('touchstart', resumeAudio);
+    });
+  </script>
+</body>
+</html>

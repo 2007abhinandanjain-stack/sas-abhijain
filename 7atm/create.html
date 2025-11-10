@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Student ATM Services — Create Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="left-group">
+      <div class="rupee-wrap"><div id="rupee2" class="rupee">₹</div></div>
+      <button id="theme-toggle2" class="theme-btn" aria-label="Toggle theme">☀️</button>
+    </div>
+    <div class="center-title">
+      <h1>Student ATM Services</h1>
+      <div class="tagline">Create a new student account</div>
+    </div>
+    <div class="right-tricolor" aria-hidden="true">
+      <div class="tri saffron"></div>
+      <div class="tri white"><div class="chakra"></div></div>
+      <div class="tri green"></div>
+    </div>
+  </header>
+
+  <div class="storm-bg" aria-hidden="true">
+    <div class="cloud cloud-a"></div>
+    <div class="cloud cloud-b"></div>
+    <div class="flash-overlay"></div>
+    <div class="chakra-bg"></div>
+    <div class="blink-overlay" id="blink-overlay-2"></div>
+  </div>
+
+  <main class="main-wrap">
+    <section class="card center-card" aria-labelledby="create-account">
+      <h2 id="create-account">Create New Account</h2>
+      <input id="new-name" placeholder="Full name" autocomplete="name" />
+      <div class="pin-wrapper">
+        <input id="new-pin" type="password" placeholder="Choose PIN (3+ digits)" inputmode="numeric" pattern="[0-9]*" autocomplete="new-password" />
+        <button class="eye-btn" onclick="togglePin('new-pin', this)" aria-label="Show or hide PIN">👁️</button>
+      </div>
+      <input id="initial-deposit" type="number" placeholder="Initial deposit (optional)" inputmode="numeric" />
+      <div class="row">
+        <button class="btn primary" onclick="handleCreate()">Create Account</button>
+        <button class="btn" onclick="window.close()">Close</button>
+      </div>
+      <div id="create-msg" class="small muted" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">AJ Computing Technologies</footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initDataIfNeeded();
+      setupThemeToggle('theme-toggle2');
+      // resume audio context on user gesture if needed
+      const resumeAudio = () => { if (window.__audioCtxStarter) { window.__audioCtxStarter(); window.__audioCtxStarter = null; } document.removeEventListener('click', resumeAudio); document.removeEventListener('touchstart', resumeAudio); };
+      document.addEventListener('click', resumeAudio);
+      document.addEventListener('touchstart', resumeAudio);
+    });
+
+    function handleCreate(){
+      const name = document.getElementById('new-name').value.trim();
+      const pin = document.getElementById('new-pin').value.trim();
+      const deposit = Number(document.getElementById('initial-deposit').value) || 0;
+      if (!name || !pin || pin.length < 3){
+        alert('Enter a valid name and PIN (min 3 digits)');
+        return;
+      }
+      const acc = createNewAccount(name, pin, deposit);
+      alert(`Account created!\nName: ${name}\nAccount No: ${acc.accountNumber}\nPIN: ${pin}`);
+      localStorage.setItem('activeAccount', acc.accountNumber);
+      window.open('dashboard.html', '_blank');
+      document.getElementById('new-name').value = '';
+      document.getElementById('new-pin').value = '';
+      document.getElementById('initial-deposit').value = '';
+      document.getElementById('create-msg').textContent = `Created account ${acc.accountNumber}. Dashboard opened in new tab.`;
+    }
+  </script>
+</body>
+</html>
